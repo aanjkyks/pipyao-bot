@@ -20,12 +20,14 @@ async def on_ready():
 @client.event
 async def on_voice_state_update(member, before, after):
     print(f'testing {after}')
-    if before is not None and before.channel.name != lobby_channel_name:
-        channel = before.channel
-        if len(channel.members) == 0:
-            await channel.delete()
-    if after is not None and after.channel.name != lobby_channel_name:
-        return
+    if before is not None:
+        if before.channel.name != lobby_channel_name:
+            channel = before.channel
+            if len(channel.members) == 0:
+                await channel.delete()
+    if after is not None: 
+        if after.channel.name != lobby_channel_name:
+            return
     guild = after.channel.guild
     voice_channel_category = discord.utils.find(lambda cat: cat.name == voice_channel_category_name, guild.categories)
     new_channel = await guild.create_voice_channel(random.choice(channel_names), category=voice_channel_category)
