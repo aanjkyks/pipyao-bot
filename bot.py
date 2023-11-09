@@ -3,10 +3,12 @@ import random
 import sys
 
 import discord
+from discord.ext import commands
 
 intents = discord.Intents.default()
 intents.voice_states = True
-client = discord.Client(intents=intents)
+intents.message_content = True
+client = commands.Bot(intents=intents, command_prefix="!")
 
 
 LOBBY_CHANNEL_NAME = "Lobby"
@@ -29,6 +31,7 @@ channel_names = [
 
 @client.event
 async def on_ready():
+    await client.tree.sync()
     print(f"Logged in as {client.user}!")
 
 
@@ -50,6 +53,12 @@ async def on_voice_state_update(member, before, after):
             random.choice(channel_names), category=voice_channel_category
         )
         await member.move_to(new_channel)
+
+
+@client.hybrid_command(description="Rolls a random number between 0 and 100")
+async def roll(ctx):
+    number = random.randint(0, 100)
+    await ctx.send(number)
 
 
 if __name__ == "__main__":
