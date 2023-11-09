@@ -31,7 +31,6 @@ channel_names = [
 
 @client.event
 async def on_ready():
-    await client.tree.sync()
     print(f"Logged in as {client.user}!")
 
 
@@ -53,6 +52,16 @@ async def on_voice_state_update(member, before, after):
             random.choice(channel_names), category=voice_channel_category
         )
         await member.move_to(new_channel)
+
+
+@client.hybrid_command(description="Sync bot's commands to Discord")
+async def sync(ctx):
+    author = ctx.message.author
+    print(f"{ctx.author} is author")
+    if not author.guild_permissions.administrator:
+        await ctx.send("you do not have admin privileges in this server!")
+        return
+    await client.tree.sync()
 
 
 @client.hybrid_command(description="Rolls a random number between 0 and 100")
