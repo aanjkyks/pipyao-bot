@@ -57,7 +57,7 @@ async def on_voice_state_update(
 
 
 @client.hybrid_command(description="Sync bot's commands to Discord")
-async def sync(ctx: discord.Context):
+async def sync(ctx: discord.ext.commands.Context):
     author = ctx.message.author
     print(f"{ctx.author} is author")
     if not author.guild_permissions.administrator:
@@ -67,7 +67,7 @@ async def sync(ctx: discord.Context):
 
 
 @client.hybrid_command(description="Rolls a random number between 0 and 100")
-async def roll(ctx: discord.Context):
+async def roll(ctx: discord.ext.commands.Context):
     number = random.randint(0, 100)
     await ctx.send(number)
 
